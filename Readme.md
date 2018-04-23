@@ -1,0 +1,9 @@
+# How to load an excel file to the server using ASPxUploadControl and display its data in ASPxGridView
+
+
+<p>This example shows how to load an excel file from your computer to the server using <strong>ASP</strong><strong>xUploadControl</strong> and then display its data in <strong>ASPxGridView</strong>.<br>To do this, you first need to place the <strong>ASPxGridView</strong> and <strong>ASPxUploadControl </strong>controls on a page and, secondly, handle the <strong>ASPxGridView.Init </strong>event and both the server-side and the client-side <strong>ASPxUploadControl</strong><strong>.FileUploadComplete</strong> events.<br>After uploading the excel file from your computer, save it in the "~/XlsTables/" directory using the <strong>ASPxUploadControl.FileUploadControl</strong> event handler on the server-side. You may choose any filename and then save it in the <strong>Session["FileName"]</strong> object to use later.<br>In the <strong>ASP</strong><strong>xGridView.</strong><strong>Init </strong>event handler you need to check the value of the <strong>Session</strong><strong>[</strong><strong>"</strong><strong>FileName</strong><strong>"</strong><strong>]</strong> object. If it's <strong>null</strong>, do nothing. Otherwise create a new <strong>DataTable </strong>and <strong>DataTableExporter </strong>objects.<br><br><strong>See also:</strong><br><a href="https://www.devexpress.com/Support/Center/p/T449148">GridView - How to upload an Excel file via UploadControl and display its data in a grid</a><br><a href="https://www.devexpress.com/Support/Center/p/T576892">GridView - How to upload an Excel file via UploadControl and show its data in a grid</a></p>
+<p><strong>Note:</strong><br>The DevExpress.Docs assembly is used in this example. So, the <a href="https://www.devexpress.com/Products/NET/Document-Server/">Document Server</a> subscription license is required to implement the demonstrated approach.</p>
+
+<br/>
+
+
