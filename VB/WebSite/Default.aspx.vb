@@ -29,7 +29,7 @@ Partial Public Class _Default
         AddHandler book.InvalidFormatException, AddressOf book_InvalidFormatException
         book.LoadDocument(FilePath)
         Dim sheet As Worksheet = book.Worksheets.ActiveWorksheet
-        Dim range As Range = sheet.GetUsedRange()
+        Dim range As CellRange = sheet.GetUsedRange()
         Dim table As DataTable = sheet.CreateDataTable(range, False)
         Dim exporter As DataTableExporter = sheet.CreateDataTableExporter(range, table, False)
         AddHandler exporter.CellValueConversionError, AddressOf exporter_CellValueConversionError

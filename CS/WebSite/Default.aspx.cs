@@ -22,7 +22,7 @@ public partial class _Default : Page {
         book.InvalidFormatException += book_InvalidFormatException;
         book.LoadDocument(FilePath);
         Worksheet sheet = book.Worksheets.ActiveWorksheet;
-        Range range = sheet.GetUsedRange();
+        CellRange range = sheet.GetUsedRange();
         DataTable table = sheet.CreateDataTable(range, false);
         DataTableExporter exporter = sheet.CreateDataTableExporter(range, table, false);
 		exporter.CellValueConversionError += exporter_CellValueConversionError;
