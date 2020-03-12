@@ -7,10 +7,10 @@ Imports System.Web.UI.WebControls
 Imports DevExpress.Web
 
 Partial Public Class [Error]
-    Inherits System.Web.UI.Page
+	Inherits System.Web.UI.Page
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs)
-        Dim errorMessage As String = ASPxWebControl.GetCallbackErrorMessage()
-        Response.Output.Write(errorMessage)
-    End Sub
+	Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs)
+		Dim errorMessage As String = ASPxWebControl.GetCallbackErrorMessage()
+		Response.Output.Write(errorMessage)
+	End Sub
 End Class
