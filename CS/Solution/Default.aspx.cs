@@ -5,10 +5,10 @@ using System.Data;
 using System.Web.UI;
 
 namespace Solution {
-    public partial class Default : System.Web.UI.Page { 
-        string FilePath {
+    public partial class Default : System.Web.UI.Page {
+        string FilePath { 
             get { return Session["FilePath"] == null ? String.Empty : Session["FilePath"].ToString(); }
-            set { Session["FilePath"] = value; }
+            set { Session["FilePath"] = value; } 
         }
         protected void Page_PreInit(object sender, EventArgs e) {
             if (!IsPostBack)
