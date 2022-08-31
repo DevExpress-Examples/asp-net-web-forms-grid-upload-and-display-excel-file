@@ -17,7 +17,7 @@ This example demonstrates how to use the [ASPxUploadControl](https://docs.devexp
 
 2. Handle the upload control's [ASPxUploadControl.FileUploadComplete](https://docs.devexpress.com/AspNet/DevExpress.Web.ASPxUploadControl.FileUploadComplete) event on the server and [ASPxClientUploadControl.FileUploadComplete](https://docs.devexpress.com/AspNet/js-ASPxClientUploadControl.FileUploadComplete) event on the client.
 
-3. Use the `ASPxUploadControl.FileUploadComplete` handler to save the uploaded files to the   `"~/XlsTables/"` directory. Save the file path to the session.
+3. Use the `ASPxUploadControl.FileUploadComplete` handler to save the uploaded files to the `"~/XlsTables/"` directory. Save the file path to the session.
 
     ```cs
     string FilePath {
