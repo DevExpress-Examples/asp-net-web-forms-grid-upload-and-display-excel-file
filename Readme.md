@@ -3,20 +3,77 @@
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/E5199)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
-<!-- default file list -->
-*Files to look at*:
+# Grid View for ASP.NET Web Forms - How to display data from an uploaded Excel file
 
-* [Default.aspx](./CS/WebSite/Default.aspx) (VB: [Default.aspx](./VB/WebSite/Default.aspx))
-* [Default.aspx.cs](./CS/WebSite/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/WebSite/Default.aspx.vb))
-* [Error.aspx](./CS/WebSite/Error.aspx) (VB: [Error.aspx](./VB/WebSite/Error.aspx))
-* [Error.aspx.cs](./CS/WebSite/Error.aspx.cs) (VB: [Error.aspx.vb](./VB/WebSite/Error.aspx.vb))
-<!-- default file list end -->
-# How to load an excel file to the server using ASPxUploadControl and display its data in ASPxGridView
+This example demonstrates how to use the [ASPxUploadControl](https://docs.devexpress.com/AspNet/DevExpress.Web.ASPxUploadControl) to let a user upload a Microsoft Excel file to the server and view the uploaded file's data in a Grid View. 
 
+> **Note:** The example application uses the `DevExpress.Docs` assembly. The [Document Server](https://www.devexpress.com/Products/NET/Document-Server/) subscription license is required to use the demonstrated technique.
 
-<p>This example shows how to load an excel file from your computer to the server using <strong>ASP</strong><strong>xUploadControl</strong> and then display its data in <strong>ASPxGridView</strong>.<br>To do this, you first need to place the <strong>ASPxGridView</strong> and <strong>ASPxUploadControl </strong>controls on a page and, secondly, handle the <strong>ASPxGridView.Init </strong>event and both the server-side and the client-side <strong>ASPxUploadControl</strong><strong>.FileUploadComplete</strong> events.<br>After uploading the excel file from your computer, save it in the "~/XlsTables/" directory using the <strong>ASPxUploadControl.FileUploadControl</strong> event handler on the server-side. You may choose any filename and then save it in the <strong>Session["FileName"]</strong> object to use later.<br>In the <strong>ASP</strong><strong>xGridView.</strong><strong>Init </strong>event handler you need to check the value of the <strong>Session</strong><strong>[</strong><strong>"</strong><strong>FileName</strong><strong>"</strong><strong>]</strong> object. If it's <strong>null</strong>, do nothing. Otherwise create a new <strong>DataTable </strong>and <strong>DataTableExporter </strong>objects.<br><br><strong>See also:</strong><br><a href="https://www.devexpress.com/Support/Center/p/T449148">GridView - How to upload an Excel file via UploadControl and display its data in a grid</a><br><a href="https://www.devexpress.com/Support/Center/p/T576892">GridView - How to upload an Excel file via UploadControl and show its data in a grid</a></p>
-<p><strong>Note:</strong><br>The DevExpress.Docs assembly is used in this example. So, the <a href="https://www.devexpress.com/Products/NET/Document-Server/">Document Server</a> subscription license is required to implement the demonstrated approach.</p>
+![Upload an Excel File and Display it in a Grid View](upload-excel-file.png)
 
-<br/>
+## Implementation Details
 
+1. Add an ASPxGridView and ASPxUploadControl to a page.
 
+2. Handle the upload control's [ASPxUploadControl.FileUploadComplete](https://docs.devexpress.com/AspNet/DevExpress.Web.ASPxUploadControl.FileUploadComplete) event on the server and [ASPxClientUploadControl.FileUploadComplete](https://docs.devexpress.com/AspNet/js-ASPxClientUploadControl.FileUploadComplete) event on the client.
+
+3. Use the `ASPxUploadControl.FileUploadComplete` handler to save the uploaded files to the `"~/XlsTables/"` directory. Save the file path to the session.
+
+    ```cs
+    string FilePath {
+        get { return Session["FilePath"] == null ? String.Empty : Session["FilePath"].ToString(); }
+        set { Session["FilePath"] = value; }
+    }
+    protected void Upload_FileUploadComplete(object sender, DevExpress.Web.FileUploadCompleteEventArgs e) {
+        FilePath = Page.MapPath("~/XlsTables/") + e.UploadedFile.FileName;
+        e.UploadedFile.SaveAs(FilePath);
+    } 
+    ```
+
+4. Call the [ASPxClientGridView.PerformCallback](https://docs.devexpress.com/AspNet/js-ASPxClientGridView.PerformCallback(args)) method from the `ASPxClientUploadControl.FileUploadComplete event` handler to refresh the Grid View after a file is uploaded.
+
+    ```js
+    function OnFileUploadComplete(s, e) {
+        Grid.PerformCallback();
+    }
+    ```
+
+4. Handle the [ASPxGridView.Init](https://docs.microsoft.com/en-us/dotnet/api/system.web.ui.control.init?view=netframework-4.8) event. Check the `Session["FileName"]` object's value in the event handler. If the value is not `null`, use the [Spreadsheet Document API](https://docs.devexpress.com/OfficeFileAPI/14912/spreadsheet-document-api) to export the saved Excel file to a DataTable object and bind the Grid View to this object.
+
+```cs
+    protected void Grid_Init(object sender, EventArgs e) {
+        if (!String.IsNullOrEmpty(FilePath)) {
+            Grid.DataSource = GetTableFromExcel();
+            Grid.DataBind();
+        }
+    }
+    private DataTable GetTableFromExcel() {
+        Workbook book = new Workbook();
+        book.InvalidFormatException += book_InvalidFormatException;
+        book.LoadDocument(FilePath);
+        Worksheet sheet = book.Worksheets.ActiveWorksheet;
+        CellRange range = sheet.GetUsedRange();
+        DataTable table = sheet.CreateDataTable(range, false);
+        DataTableExporter exporter = sheet.CreateDataTableExporter(range, table, false);
+        exporter.CellValueConversionError += exporter_CellValueConversionError;
+        exporter.Export();
+        return table;
+    }
+```
+
+## Files to Look At
+
+- [Default.aspx](./CS/Solution/Default.aspx) (VB: [Default.aspx](./VB/Solution/Default.aspx))
+- [Default.aspx.cs](./CS/Solution/Default.aspx.cs) (VB: [Default.aspx.vb](./VB/Solution/Default.aspx.vb))
+- [Error.aspx](./CS/Solution/Error.aspx) (VB: [Error.aspx](./VB/Solution/Error.aspx))
+- [Error.aspx.cs](./CS/Solution/Error.aspx.cs) (VB: [Error.aspx.vb](./VB/Solution/Error.aspx.vb))
+
+## Documentation
+
+- [Office File API](https://docs.devexpress.com/OfficeFileAPI/14911/office-file-api)
+- [File Upload](https://docs.devexpress.com/AspNet/8298/components/file-management/file-upload)
+
+## More Examples
+
+- [Grid View for ASP.NET MVC - How to display data from an uploaded Excel file](https://www.devexpress.com/Support/Center/p/T576892)
+- [Grid View for Web Forms - How to upload files in Edit mode and see them on a click in Browse mode](https://github.com/DevExpress-Examples/aspxgridview-upload-files)
