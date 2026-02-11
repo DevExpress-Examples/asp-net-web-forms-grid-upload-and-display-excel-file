@@ -79,7 +79,7 @@ This example demonstrates how to use the [ASPxUploadControl](https://docs.devexp
 - [Grid View for ASP.NET MVC - How to display data from an uploaded Excel file](https://www.devexpress.com/Support/Center/p/T576892)
 - [Grid View for Web Forms - How to upload files in Edit mode and see them on a click in Browse mode](https://github.com/DevExpress-Examples/aspxgridview-upload-files)
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=asp-net-web-forms-grid-upload-and-display-excel-file&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=asp-net-web-forms-grid-upload-and-display-excel-file&~~~was_helpful=no)
 
